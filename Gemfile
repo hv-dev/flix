@@ -72,4 +72,4 @@ group :test do
 end
 
 # Used for the styling of the site
-gem "bootstrap"
+gem "bootstrap", '~> 5.1', '>= 5.1.3'
