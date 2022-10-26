@@ -23,14 +23,16 @@ class MoviesController < ApplicationController
     end
 
     def create
-        @movie = Movie.new(movie_params)
-        
-        if @movie.save
-            redirect_to @movie, notice: "Movie successfully created!"
-       else
-            render :new, status: :unprocessable_entity 
-       end
-    end
+        @movie = Movie.find(params[:movie_id])
+        @review = @movie.reviews.new(review_params)
+      
+        if @review.save
+          redirect_to movie_reviews_path(@movie),
+                        notice: "Thanks for your review!"
+        else
+          render :new, status: :unprocessable_entity
+        end
+    end 
 
     def new
         @movie = Movie.new
