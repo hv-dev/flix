@@ -1,6 +1,7 @@
 class ReviewsController < ApplicationController
 
-    before_action :set_movie                                                                                                                                                                  
+    before_action :require_signin, except: [:index]
+    before_action :set_movie
 
     def index
         @reviews = @movie.reviews
@@ -12,6 +13,7 @@ class ReviewsController < ApplicationController
 
     def create
         @review = @movie.reviews.new(review_params)
+        @review.user = current_user
 
         if @review.save
             redirect_to @movie, notice: "Movie successfully created!"
@@ -24,5 +26,9 @@ class ReviewsController < ApplicationController
 
     def set_movie
         @movie = Movie.find(params[:movie_id])
+    end
+
+    def review_params
+        params.require(:reivew).permit(:comment, :stars)
     end
 end

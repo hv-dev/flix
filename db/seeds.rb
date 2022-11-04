@@ -174,3 +174,58 @@ Movie.create!([
     image_file_name: "wonder-woman.png"
   }
 ])
+
+User.create!([
+  {
+    name: "Harry Verrall",
+    username: "harryv",
+    email: "harryv@email.com",
+    password: "password",
+    admin: true
+  },
+  {
+    name: "User 1",
+    username: "user1",
+    email: "user1@email.com",
+    password: "password"
+  },
+  {
+    name: "User 2",
+    username: "user2",
+    email: "user2@email.com",
+    password: "password"
+  },
+  {
+    name: "User 3",
+    username: "user3",
+    email: "user3@email.com",
+    password: "password"
+  }
+])
+
+Review.create!([
+  {
+    stars: "5",
+    comment: "Brought the entire set of Marvel movies made over the past decade to a climax, especially with the cliffhanger ending, it reminded me of the ending to Star Wars 'Empire Strikes Back' and left you waiting for Endgame.",
+    movie_id: 4,
+    user_id: 2
+  },
+  {
+    stars: "4",
+    comment: "Will leave your heart strings tugged, but is a master class in character development.",
+    movie_id: 4,
+    user_id: 1
+  },
+  {
+    stars: "4",
+    comment: "For the first time it feels as if there is emotional weight and real stakes behind a film in the MCU. Focusing on the compelling rise of Thanos is a welcome deviation from the standard Marvel template.",
+    movie_id: 4,
+    user_id: 3
+  },
+  {
+    stars: "3",
+    comment: "By now, you probably either love Marvel movies or you hate them. If what you are looking for is snappy dialogue, splashy scenes and an abundance of CGI battles, then this may be the best of the bunch. For me, as only a casual fan, I could appreciate the filmmakers giving it their all, yet found myself fatigued by all the eye-numbing action by the end.",
+    movie_id: 4,
+    user_id: 4
+  }
+])

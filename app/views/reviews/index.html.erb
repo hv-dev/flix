@@ -3,9 +3,10 @@
 <ul class="reviews">
   <% @reviews.each do |review| %>
     <li>
-      <%= pluralize(review.stars, 'star') %>
       <p>
-        <%= review.name %>
+        <%= profile_image(review.user, 35) %>
+        <%= link_to review.user.name, review.user %> -
+        <%= pluralize(review.stars, 'star') %>
         <span class="date">
           <%= time_ago_in_words(review.created_at) %> ago
         </span>
