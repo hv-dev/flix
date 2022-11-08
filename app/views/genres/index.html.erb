@@ -1,0 +1,22 @@
+<h1>List of Genres</h1>
+<% @genres.each do |genre| %>
+  <section class="genre">
+    <div class="summary">
+      <h2>
+        <%= link_to genre.name, genre_path(genre.id) %>
+      </h2>
+      <span class="stars">
+        
+      </span>
+      <p>
+
+      </p>
+    </div>
+  </section>
+<% end %>
+
+<% if current_user_admin? %>
+  <section class="admin">
+    <%= link_to "Add new Genre", new_genre_path, class: "button" %>
+  </section>
+<% end %>

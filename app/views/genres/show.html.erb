@@ -1,0 +1,38 @@
+<h1><%= @genre.name %> Genre</h1>
+
+<h2>Movies in this Genre</h2>
+
+<% @movies.each do |movie| %>
+  <section class="movie">
+    <div class="image">
+      <%= image_tag movie.image_file_name %>
+    </div>
+    <div class="summary">
+      <h2>
+        <%= link_to movie.title, movie_path(movie.id) %>
+      </h2>
+      <h3>
+        <%= total_gross(movie) %>
+      </h3>
+      <span class="stars">
+        <%= average_stars(movie) %>
+      </span>
+      <p>
+        <%= truncate(movie.description, length: 150, separator: ' ') %>
+      </p>
+    </div>
+  </section>
+<% end %>
+
+<% if current_user_admin? %>
+  <section class="admin">
+    <%= link_to "Edit Genre", edit_genre_path(@genre), class: "button" %>
+
+    <%= link_to "Delete", genre_path(@genre), class: "button",
+        data: { 
+            turbo_method: :delete,
+            turbo_confirm: "Are you sure you want to delete this genre?"
+        } 
+%>
+  </section>
+<% end %>

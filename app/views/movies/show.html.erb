@@ -39,31 +39,41 @@
       </tr>
     </table>
 
-    <aside>
-      <% if @fans.present? %>
-        <h4>Fans</h4>
-          <ul>
-            <% @fans.each do |user| %>
-              <li>
-                <%= link_to user.name, user %>
-              </li>
-            <% end %>
-          </ul>
-      <% end %>
-    </aside>
-
     <%= link_to "Write Review", new_movie_review_path(@movie), class: "review" %>
-    <% if current_user_admin? %>
-      <section class="admin">
-        <%= link_to "Edit", edit_movie_path(@movie), class: "button" %>
 
-        <%= link_to "Delete", movie_path(@movie), class: "button",
-          data: { 
-            turbo_method: :delete,
-            turbo_confirm: "Are you sure you want to delete this movie?"
-          } 
-        %>
-      </section>
-    <% end %>
   </div>
+
+  <aside>
+    <% if @fans.present? %>
+      <h4>Fans</h4>
+      <ul>
+        <% @fans.each do |user| %>
+          <li>
+            <%= link_to user.name, user %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+    <% if @genres.present? %>
+      <h4>Genres</h4>
+      <ul>
+        <% @genres.each do |g| %>
+          <li><%= g.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </aside>
 </section>
+
+<% if current_user_admin? %>
+  <section class="admin">
+    <%= link_to "Edit", edit_movie_path(@movie), class: "button" %>
+
+    <%= link_to "Delete", movie_path(@movie), class: "button",
+        data: { 
+          turbo_method: :delete,
+          turbo_confirm: "Are you sure you want to delete this movie?"
+        } 
+    %>
+  </section>
+<% end %>
