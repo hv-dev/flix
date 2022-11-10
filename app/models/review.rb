@@ -8,4 +8,5 @@ class Review < ApplicationRecord
   validates :comment, length: { minimum: 4 }
   validates :stars, inclusion: { in: STARS, message: "Should be between 1 and 5" }
 
+  scope :past_n_days, lambda { |days| where("created_on >= ?", days.days.ago ) }
 end

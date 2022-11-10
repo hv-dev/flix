@@ -1,16 +1,15 @@
 class UsersController < ApplicationController
 
-
+    before_action :set_user, only: [:show, :destroy]
     before_action :require_signin, except: [:new, :create]
     before_action :require_correct_user, only: [:edit, :update]
     before_action :require_correct_user_or_admin, only: [:destroy]
 
     def index
-        @users = User.all
+        @users = User.not_admins
     end
 
     def show
-        @user = User.find(params[:id])
         @reviews = @user.reviews
         @favorites = @user.favorite_movies
     end
@@ -45,7 +44,6 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        @user = User.find(params[:id])
         if session[:user_id] = @user.id
             session[:user_id] = nil
         end
@@ -56,6 +54,10 @@ class UsersController < ApplicationController
     end
 
     private
+
+    def set_user
+        @user = User.find_by!(username: params[:id])
+    end
 
     def user_params
         params.require(:user).permit(

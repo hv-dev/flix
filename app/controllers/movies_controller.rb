@@ -5,7 +5,7 @@ class MoviesController < ApplicationController
     before_action :require_admin, except: [:index, :show]
 
     def index
-        @movies = Movie.released
+        @movies = Movie.send(movies_filter)
     end
 
     def show
@@ -18,7 +18,6 @@ class MoviesController < ApplicationController
     end
 
     def edit
-        @movie = Movie.find(params[:id])
     end
 
     def update
@@ -43,7 +42,6 @@ class MoviesController < ApplicationController
     end
 
     def destroy
-        title = @movie.title
         @movie.destroy
 
         redirect_to movies_url, status: :see_other, alert: @movie.title + " has been deleted."
@@ -52,12 +50,20 @@ class MoviesController < ApplicationController
     private
 
     def set_movie
-        @movie = Movie.find(params[:id])
+        @movie = Movie.find_by!(slug: params[:id])
     end
 
     def movie_params
         params.require(:movie).
           permit(:title, :description, :rating, :released_on, :total_gross,
                  :director, :duration, :image_file_name, genre_ids: [])
-      end
+    end
+
+    def movies_filter
+        if params[:filter].in? %w(upcoming recent hits flops)
+            params[:filter]
+        else
+            :released
+        end
+    end
 end

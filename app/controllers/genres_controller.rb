@@ -36,16 +36,14 @@ class GenresController < ApplicationController
     end
 
     def destroy
-        title = @movie.title
-        @movie.destroy
-
-        redirect_to movies_url, status: :see_other, alert: title + " has been deleted."
+        @genre.destroy
+        redirect_to genres_url, status: :see_other, alert: @genre.name + " has been deleted."
     end
 
     private
     
     def set_genre
-        @genre = Genre.find(params[:id])
+        @genre = Genre.find_by!(name: params[:id].capitalize)
     end
 
     def genre_params

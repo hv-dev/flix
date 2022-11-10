@@ -22,10 +22,19 @@ class ReviewsController < ApplicationController
         end
     end
 
+    def destroy
+        @review = @movie.reviews.find(params[:id])
+        if @review.destroy
+            redirect_to @review.user, notice: "Review successfully deleted!"
+        else
+            redirect_to @review.user, alert: "Unable to delete review."
+        end
+    end
+
     private
 
     def set_movie
-        @movie = Movie.find(params[:movie_id])
+        @movie = Movie.find_by!(slug: params[:id])
     end
 
     def review_params
