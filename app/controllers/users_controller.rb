@@ -70,12 +70,12 @@ class UsersController < ApplicationController
     end
 
     def require_correct_user
-        @user = User.find(params[:id])
+        set_user
         redirect_to root_url, status: :see_other, alert: "You do not have access to that page, redirected to homepage." unless current_user?(@user)
     end
 
     def require_correct_user_or_admin
-        @user = User.find(params[:id])
+        set_user
         redirect_to root_url, status: :see_other, alert: "You do not have access to that page, redirected to homepage." unless current_user?(@user) || current_user_admin?
     end
 end
