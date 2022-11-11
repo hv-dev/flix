@@ -15,7 +15,8 @@ class User < ApplicationRecord
     uniqueness: { case_sensitive: false }
 
   scope :by_name, -> { order(:name) }
-  scope :not_admins, -> { by_name.where(admin: false) }
+  scope :not_admins, -> { where(admin: false).order(:name) }
+  scope :admin, -> { where("admin == true > ?").order(:name) }
 
   def gravatar_id
     Digest::MD5::hexdigest(email.downcase)

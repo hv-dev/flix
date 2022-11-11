@@ -27,6 +27,11 @@
 
         <ul class="right">
         <% if current_user %>
+            <% if current_user_admin? %>
+                <li>
+                    <%= link_to "Admin Panel", admin_path %>
+                </li>
+            <% end %>
             <li>
                 <%= link_to current_user.name, current_user %>
             </li>

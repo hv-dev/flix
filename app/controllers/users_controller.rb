@@ -1,15 +1,18 @@
 class UsersController < ApplicationController
 
-    before_action :set_user, only: [:show, :destroy]
     before_action :require_signin, except: [:new, :create]
+    before_action :require_admin, only: [:index]
     before_action :require_correct_user, only: [:edit, :update]
     before_action :require_correct_user_or_admin, only: [:destroy]
 
     def index
-        @users = User.not_admins
+        @users = User.send(users_filter)
     end
 
+    
+
     def show
+        @user = User.find_by!(username: params[:id])
         @reviews = @user.reviews
         @favorites = @user.favorite_movies
     end
@@ -44,20 +47,13 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        if session[:user_id] = @user.id
-            session[:user_id] = nil
-        end
-
         @user.destroy
+        session[:user_id] = nil
 
         redirect_to root_url, status: :see_other, alert: "Account successfuly deleted!"
     end
 
     private
-
-    def set_user
-        @user = User.find_by!(username: params[:id])
-    end
 
     def user_params
         params.require(:user).permit(
@@ -70,12 +66,20 @@ class UsersController < ApplicationController
     end
 
     def require_correct_user
-        set_user
+        @user = User.find_by!(username: params[:id])
         redirect_to root_url, status: :see_other, alert: "You do not have access to that page, redirected to homepage." unless current_user?(@user)
     end
 
     def require_correct_user_or_admin
-        set_user
+        @user = User.find_by!(username: params[:id])
         redirect_to root_url, status: :see_other, alert: "You do not have access to that page, redirected to homepage." unless current_user?(@user) || current_user_admin?
+    end
+
+    def users_filter
+        if params[:filter].in? %w(all admins)
+            params[:filter]
+        else
+            :not_admins
+        end
     end
 end
