@@ -20,12 +20,12 @@ class Movie < ApplicationRecord
 
     validates :director, presence: true
 
-    validates :image_file_name, format: {
-                                with: /\w+\.(jpg|png)\z/i,
-                                message: "must be a JPG or PNG image"
-                                }
-
     validates :rating, inclusion: { in: RATINGS }
+
+    validate :acceptable_image
+
+
+    has_one_attached :poster_image
 
     scope :released, -> { where("released_on < ?", Time.now).order("released_on desc") }
     scope :upcoming, -> { where("released_on > ?", Time.now).order("released_on asc") }
@@ -52,5 +52,18 @@ class Movie < ApplicationRecord
 
     def set_slug
         self.slug = title.parameterize
+    end
+
+    def acceptable_image
+        return unless poster_image.attached?
+
+        unless poster_image.blob.byte_size <= 1.megabyte
+          errors.add(:poster_image, "must be smaller than 1 megabyte")
+        end
+      
+        acceptable_types = ["image/jpeg", "image/png"]
+        unless acceptable_types.include?(poster_image.content_type)
+          errors.add(:poster_image, "must be a JPEG or PNG")
+        end
     end
 end

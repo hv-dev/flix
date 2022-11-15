@@ -27,4 +27,12 @@ module MoviesHelper
         link_to(text, url)
       end
     end
+
+    def poster_image(movie)
+      if movie.poster_image.attached?
+        image_tag movie.poster_image
+      else
+        image_tag "placeholder.png"
+      end
+    end
 end

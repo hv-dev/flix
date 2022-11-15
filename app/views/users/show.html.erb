@@ -9,7 +9,7 @@
         <ul>
           <% @favorites.each do |favorite| %>
             <li>
-              <%= link_to image_tag(favorite.image_file_name), favorite %>
+              <%= link_to poster_image(favorite), favorite %>
             </li>
           <% end %>
         </ul>
